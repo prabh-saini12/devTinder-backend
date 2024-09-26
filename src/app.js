@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const User = require("./models/user");
 
 const app = express();
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -11,18 +12,27 @@ app.get("/", (req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
+    // console.log(req.body)
+
     // creating a new instance of a the user model and saving it to the database
-    const user = await new User({
-      firstName: "john",
-      lastName: "deo",
-      emailId: "john@gmail.com",
-      password: "12345",
-    });
+    const user = await new User(req.body);
     await user.save();
 
     return res.status(201).json({
       success: true,
       message: "User created successfully",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/feed", async (req, res) => {
+  try {
+    const user = await User.find({});
+    return res.status(200).json({
+      success: true,
       user,
     });
   } catch (error) {
