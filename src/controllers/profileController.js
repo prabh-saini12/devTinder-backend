@@ -3,7 +3,11 @@ const { validateEditProfileData } = require("../utils/validation");
 const GetProfile = async (req, res) => {
   try {
     const user = req.user;
-    res.send(user);
+    res.status(200).json({
+      success: true,
+      message: "Profile retrieved successfully",
+      data: user,
+    });
   } catch (error) {
     console.log(error.message);
   }
