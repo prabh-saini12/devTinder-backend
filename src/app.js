@@ -2,10 +2,18 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
 
 // routes import
 const { authRouter } = require("./routes/authRoutes");
