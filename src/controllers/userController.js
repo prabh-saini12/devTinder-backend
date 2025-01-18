@@ -12,9 +12,10 @@ const Requests = async (req, res) => {
       status: "interested",
     }).populate("fromUserId", USER_SAFE_DATA);
     // }).populate("fromUserId", ["firstName", "lastName"]);
-    res
-      .status(200)
-      .json({ message: "Requests fetched successfully", connectionRequest });
+    res.json({
+      message: "Data fetched successfully",
+      data: connectionRequest,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -77,7 +77,7 @@ const reviewConnectionRequest = async (req, res) => {
     }
 
     const connectionRequest = await ConnectionRequest.findOne({
-      fromUserId: requestId,
+      _id: requestId,
       toUserId: loggedInUser._id,
       status: "interested",
     });
@@ -89,7 +89,7 @@ const reviewConnectionRequest = async (req, res) => {
     connectionRequest.status = status;
     const data = await connectionRequest.save();
 
-    res.status(200).json({ message: "Connection request " + status, data });
+    res.json({ message: "Connection request " + status, data });
   } catch (error) {
     res.status(404).send("ERROR " + error.message);
   }

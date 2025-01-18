@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 const SignUp = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     // validation of data
     validateSignUpData(req);
 
@@ -29,13 +29,14 @@ const SignUp = async (req, res) => {
       emailId,
       password: passwordHash,
     });
-    await user.save();
+    const savedUser = await user.save();
+    const token = await savedUser.getJWT();
 
-    return res.status(201).json({
-      success: true,
-      message: "User created successfully",
-      // user,
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000),
     });
+
+    res.json({ message: "User Added successfully!", data: savedUser });
   } catch (error) {
     console.log(error.message);
   }
@@ -69,7 +70,7 @@ const Login = async (req, res) => {
         // secure: true,
         expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
       });
-      return res.json(user); 
+      return res.json(user);
     } else {
       return res.status(401).json({ error: "Invalid credentials" });
     }
