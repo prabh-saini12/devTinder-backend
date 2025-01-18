@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 const SignUp = async (req, res) => {
   try {
-    // console.log(req.body)
+    console.log(req.body);
     // validation of data
     validateSignUpData(req);
 
@@ -20,7 +20,7 @@ const SignUp = async (req, res) => {
     }
 
     // Encrypt the password
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 8);
 
     // creating a new instance of a the user model and saving it to the database
     const user = await new User({
@@ -46,13 +46,13 @@ const Login = async (req, res) => {
     const { emailId, password } = req.body;
 
     if (!emailId || !password) {
-      throw new Error("Email and password are required");
+      return res.status(400).json({ error: "Email and password are required" });
     }
 
     const user = await User.findOne({ emailId });
 
     if (!user) {
-      throw new Error("invalid credentials");
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const isPasswordValid = await user.validatePassword(password);
@@ -69,12 +69,13 @@ const Login = async (req, res) => {
         // secure: true,
         expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
       });
-      res.send("Login successful");
+      return res.json(user); 
     } else {
-      throw new Error("invalid credentials");
+      return res.status(401).json({ error: "Invalid credentials" });
     }
   } catch (error) {
-    console.log("ERROR " + error.message);
+    console.error("ERROR:", error.message);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 

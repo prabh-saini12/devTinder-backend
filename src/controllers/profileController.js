@@ -24,6 +24,8 @@ const EditProfile = async (req, res) => {
     const loggedInUser = req.user;
     Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]));
 
+    await loggedInUser.save();
+
     return res.status(200).json({
       success: true,
       message: `${loggedInUser.firstName}, your profile updated successfully`,
