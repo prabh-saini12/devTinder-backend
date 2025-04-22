@@ -8,12 +8,17 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL,
+//     credentials: true,
+//   })
+// );
+
+app.use(cors({
+  origin: 'https://dev-tinder-frontend-gamma.vercel.app',
+  credentials: true // if you're using cookies or auth headers
+}));
 
 app.get("/hello", (req, res) => {
   res.send("Running");
