@@ -15,6 +15,10 @@ app.use(
   })
 );
 
+
+app.get("/hello",(req,res)=>{
+  res.send("Running")
+})
 // routes import
 const { authRouter } = require("./routes/authRoutes");
 const { requestRouter } = require("./routes/requestRoutes");
