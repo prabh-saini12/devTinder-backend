@@ -66,8 +66,9 @@ const Login = async (req, res) => {
       // add the token to cookie and send the response back to the user
       res.cookie("token", token, {
         httpOnly: true,
-        // sameSite: "strict",
         secure: true,
+        sameSite: "None",
+
         expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
       });
       return res.json(user);
