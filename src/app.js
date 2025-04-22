@@ -15,10 +15,9 @@ app.use(
   })
 );
 
-
-app.get("/hello",(req,res)=>{
-  res.send("Running")
-})
+app.get("/hello", (req, res) => {
+  res.send("Running");
+});
 // routes import
 const { authRouter } = require("./routes/authRoutes");
 const { requestRouter } = require("./routes/requestRoutes");
@@ -34,8 +33,8 @@ app.use("/", userRouter);
 connectDB()
   .then(() => {
     console.log("Database connected");
-    app.listen(3000, () => {
-      console.log("Server is running on port 3000");
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server is running on port ${process.env.PORT || 8000}`);
     });
   })
   .catch((err) => {
